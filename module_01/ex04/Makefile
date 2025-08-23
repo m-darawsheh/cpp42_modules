@@ -1,16 +1,17 @@
-NAME =  outfile
 
-CXX = c++
+NAME = outfile 
+
+CXX  = c++ 
 
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCS = main.cpp Weapon.cpp HumanA.cpp HumanB.cpp
+SRCS = main.cpp
 
-OBJS = $(SRCS:.cpp=.o)
+OBJS = main.o
 
-all: $(NAME)
+all : $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME) : $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
 
 clean:
