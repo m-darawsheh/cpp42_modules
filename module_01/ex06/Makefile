@@ -1,4 +1,4 @@
-NAME = outfile
+NAME = harlFilter
 
 CXX = c++
 
