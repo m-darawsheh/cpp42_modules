@@ -11,10 +11,7 @@ class Zombie
 	public:
 	void announce( void );
 	Zombie();
-	void setName(std::string name)
-	{
-		this->name = name;
-	}
+	void setName(std::string name);
 	~Zombie();
 };
 
