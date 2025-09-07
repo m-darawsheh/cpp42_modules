@@ -1,11 +1,13 @@
-#include "FragTrap.hpp"
+#include "DiamondTrap.hpp"
 
 int main()
 {
-    FragTrap a("FragTrap A");
-    a.attack("Target1");
-    a.takeDamage(30);
-    a.beRepaired(20);
-    a.highFivesGuys();
+    DiamondTrap dt("Diamondy");
+    dt.attack("Target1");
+    dt.takeDamage(30);
+    dt.beRepaired(20);
+    dt.guardGate();
+    dt.highFivesGuys();
+    dt.whoAmI();
     return 0;
 }
