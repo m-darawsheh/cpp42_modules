@@ -32,3 +32,8 @@ void Cat::makeSound() const
 {
     std::cout << "the sound from Cat \n";
 }
+Cat::Cat(std::string type)
+{
+    std::cout << "parameterized constructor called from Cat class \n";
+    this->type = type;
+}

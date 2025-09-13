@@ -1,5 +1,5 @@
 
-#include "Animal.hpp"
+#include "AAnimal.hpp"
 #include "Dog.hpp"
 #include "Cat.hpp"
 #include "WrongAnimal.hpp"
@@ -7,7 +7,7 @@
 
 int main()
 {
-    Animal* animals[10];
+    AAnimal* animals[10];
     for (int i = 0; i < 10; i++)
     {
         if (i % 2 == 0)

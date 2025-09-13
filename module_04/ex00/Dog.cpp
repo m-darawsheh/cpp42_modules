@@ -28,3 +28,9 @@ void Dog::makeSound() const
 {
     std::cout << "the sound from Dog \n";
 }
+
+Dog::Dog(std::string type)
+{
+    std::cout << "parameterized constructor called from Dog class \n";
+    this->type = type;
+}

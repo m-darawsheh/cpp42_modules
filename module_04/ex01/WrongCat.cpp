@@ -26,3 +26,7 @@ WrongCat::~WrongCat() {
 void WrongCat::makeSound() const {
     std::cout << "The sound from WrongCat\n";
 }
+
+WrongCat::WrongCat(std::string type) : WrongAnimal(type) {
+    std::cout << "Parameterized constructor called from WrongCat class\n";
+}

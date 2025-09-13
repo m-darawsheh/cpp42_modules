@@ -36,3 +36,13 @@ std::string Animal::getType() const
 {
     return this->type;
 }
+
+
+void Animal::setType(std::string type) {
+    this->type = type;
+}
+
+
+Animal::Animal(std::string type) : type(type) {
+    std::cout << "Parameterized constructor called from Animal class\n";
+}

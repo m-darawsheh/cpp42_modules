@@ -28,3 +28,11 @@ void WrongAnimal::makeSound() const {
 std::string WrongAnimal::getType() const {
     return this->type;
 }
+
+WrongAnimal::WrongAnimal(std::string type) : type(type) {
+    std::cout << "Parameterized constructor called from WrongAnimal class\n";
+}
+
+void WrongAnimal::setType(std::string type) {
+    this->type = type;
+}
