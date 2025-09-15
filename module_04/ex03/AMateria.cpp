@@ -1,0 +1,26 @@
+#include "AMateria.hpp"
+
+AMateria::AMateria(std::string const & type) : type(type) {}
+
+AMateria::~AMateria() {}
+
+AMateria::AMateria() : type("default") {}
+
+AMateria::AMateria(const AMateria  & src) {
+    *this = src;
+}
+
+AMateria & AMateria::operator=(const AMateria  & rhs) {
+    if (this != &rhs) {
+        this->type = rhs.type;
+    }
+    return *this;
+}
+
+std::string const & AMateria::getType() const {
+    return this->type;
+}
+
+void AMateria::use(ICharacter& target) {
+    (void)target;
+}
