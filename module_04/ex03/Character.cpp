@@ -2,13 +2,13 @@
 
 Character::Character() : name("default") {
     for (int i = 0; i < 4; i++) {
-        inventory[i] = nullptr;
+        inventory[i] = 0;
     }
 }
 
 Character::Character(std::string const & name) : name(name) {
     for (int i = 0; i < 4; i++) {
-        inventory[i] = nullptr;
+        inventory[i] = 0;
     }
 }
 
@@ -24,7 +24,7 @@ Character& Character::operator=(const Character  & obj) {
             if (obj.inventory[i]) {
                 this->inventory[i] = obj.inventory[i]->clone();
             } else {
-                this->inventory[i] = nullptr;
+                this->inventory[i] = 0;
             }
         }
     }
@@ -32,8 +32,12 @@ Character& Character::operator=(const Character  & obj) {
 }
 
 Character::Character(const Character  & src) : name(src.name) {
-    for (int i = 0; i < 4; ++i) {
-        inventory[i] = src.inventory[i] ? src.inventory[i]->clone() : nullptr;
+    for (int i = 0; i < 4; ++i)
+    {
+        if (src.inventory[i])
+            inventory[i] = src.inventory[i]->clone();
+        else
+            inventory[i] = 0;
     }
 }
 
@@ -60,7 +64,7 @@ void Character::unequip(int idx) {
     {
         std::cout << "out of range\n";
     }
-    inventory[idx] = nullptr;
+    inventory[idx] = 0;
 }
 
 void Character::equip(AMateria* m) {

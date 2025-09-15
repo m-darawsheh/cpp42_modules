@@ -1,12 +1,14 @@
 #include "Cure.hpp"
+#include "ICharacter.hpp"
+#include <iostream>
 
 Cure::Cure() : AMateria("cure") {}
 
 Cure::Cure(const Cure  & src) : AMateria(src) {}
 
-Cure & Cure::operator=(const Cure  & rhs) {
-    if (this != &rhs) {
-        AMateria::operator=(rhs);
+Cure & Cure::operator=(const Cure  & obj) {
+    if (this != &obj) {
+        this->type = obj.type;
     }
     return *this;
 }

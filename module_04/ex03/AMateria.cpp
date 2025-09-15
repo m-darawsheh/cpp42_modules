@@ -10,9 +10,9 @@ AMateria::AMateria(const AMateria  & src) {
     *this = src;
 }
 
-AMateria & AMateria::operator=(const AMateria  & rhs) {
-    if (this != &rhs) {
-        this->type = rhs.type;
+AMateria & AMateria::operator=(const AMateria  & obj) {
+    if (this != &obj) {
+        this->type = obj.type;
     }
     return *this;
 }
