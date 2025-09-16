@@ -11,7 +11,6 @@ MateriaSource::~MateriaSource() {
     for (int i = 0; i < 4; i++) {
         if (store_data[i]) {
             delete store_data[i];
-            store_data[i] = 0;
         }
     }
 }
