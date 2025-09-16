@@ -29,7 +29,8 @@ Cat& Cat::operator=(const Cat &obj)
 Cat :: Cat (const Cat&obj)
 {
     std :: cout  << "copy constructor form Cat class \n";
-    *this = obj;
+    this->brain = new Brain(*obj.brain);
+    this->type = obj.type;
 }
 
 

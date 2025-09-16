@@ -27,7 +27,8 @@ Dog& Dog::operator=(const Dog &obj)
 Dog :: Dog (const Dog&obj)
 {
     std :: cout  << "copy constructor form Dog class \n";
-    *this = obj;
+    this->brain = new Brain(*obj.brain);
+    this->type = obj.type;
 }
 
 void Dog::makeSound() const
