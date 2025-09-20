@@ -1,15 +1,14 @@
 
 #include "Bureaucrat.hpp"
+#include "Form.hpp"
 
 int main()
 {
     try
     {
-        Bureaucrat test1;
-        Bureaucrat test2("name", 1);
-        test2.incrementGrade();
-        std::cout<<"hi\n";
-
+        Form form;
+        Bureaucrat test2("name", 70);
+        test2.signForm(form);
     }
     catch(const std::exception& e)
     {

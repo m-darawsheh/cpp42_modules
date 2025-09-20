@@ -1,4 +1,5 @@
 #include "Bureaucrat.hpp"
+#include "Form.hpp"
 
 
 Bureaucrat::Bureaucrat():name("default"), grade(77){}
@@ -58,8 +59,25 @@ void Bureaucrat::decrementGrade()
     ++grade;
 }
 
+
+void Bureaucrat::signForm(Form obj)
+{
+    try
+    {
+        obj.beSigned(*this);
+        std ::cout<< this->getName() << " signed " << obj.getName()<< "\n";        
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << this->getName() << " couldn’t sign " << obj.getName()<< " because "<<e.what() << '\n';
+    }
+    
+
+}
+
 std::ostream &operator<<(std::ostream &os, const Bureaucrat&obj)
 {
     os << obj.getName()<< ", bureaucrat grade  " << obj.getGrade()<< ".\n";
     return os;
 }
+
