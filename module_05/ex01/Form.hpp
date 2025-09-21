@@ -20,6 +20,7 @@ class Form
     ~Form();//
     Form(const Form &obj);//
     Form& operator=(const Form &obj);//
+    Form(const std::string name, bool is_sign, const int sign_grade, const int exec_grade);
     // geters
     std::string getName()const;//
     bool getIsSign()const;//

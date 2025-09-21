@@ -5,6 +5,14 @@ Form::Form():name("default"), is_sign(false), sign_grade(10), exec_grade(10)
 {
 }
 
+Form::Form(const std::string name, bool is_sign, const int sign_grade, const int exec_grade):name(name), is_sign(is_sign), sign_grade(sign_grade), exec_grade(exec_grade)
+{
+    if (sign_grade < 1 || exec_grade < 1)
+        throw Form::GradeTooHighException();
+    if (sign_grade > 150 || exec_grade > 150)
+        throw Form::GradeTooLowException();
+}
+
 Form::~Form(){}
 
 Form::Form (const Form &obj):name(obj.name), is_sign(obj.is_sign), sign_grade(obj.sign_grade), exec_grade(obj.exec_grade)
@@ -52,7 +60,7 @@ const char* Form::GradeTooLowException::what()const throw()
 void Form::beSigned(Bureaucrat obj)
 {
     if (obj.getGrade() > sign_grade )
-        return throw Form::GradeTooLowException();
+        throw Form::GradeTooLowException();
     is_sign = true;
 }
 
