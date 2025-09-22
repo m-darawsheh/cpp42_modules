@@ -33,6 +33,7 @@ void RobotomyRequestForm::execute(Bureaucrat const & executor) const
     if (executor.getGrade() > getExecGrade())
         throw GradeTooLowException();
     std::cout << "Attempting robotomy...\a" << std::endl;
+    
     std::srand(std::time(0));
     bool result = std::rand() % 2;
     if (!result)
