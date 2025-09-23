@@ -14,7 +14,7 @@
         bob.signForm(robot);
         alice.signForm(pardon);
         std::cout << "--------------------------------------\n";
-        jone.executeForm(*shrub);
+        alice.executeForm(*shrub);
         bob.executeForm(*robot);
         alice.executeForm(*pardon);
         delete shrub;
