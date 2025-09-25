@@ -109,8 +109,8 @@ static void int_path(std::string str)
     }
     else
         std::cout << "Non displayable" << std::endl;
-    std::cout << "Float: " << static_cast<float>(value) << "f" << std::endl;
-    std::cout << "Double: " << static_cast<double>(value) << std::endl;
+    std::cout << "Float: " << static_cast<float>(value)<< "f" << std::endl;
+    std::cout << "Double: " << static_cast<double>(value)<< std::endl;
 }
 
 
@@ -132,7 +132,7 @@ static void float_path(std::string str)
 
 static void double_path(std::string str)
 {
-    double value = std::atof(str.c_str());
+    double value = strtod(str.c_str(),0);
     std::cout << "Int: " << static_cast<int>(value) << std::endl;
     std::cout << "Char: ";
     if (value < 0 || value > 127)
