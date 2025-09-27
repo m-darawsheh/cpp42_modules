@@ -1,4 +1,5 @@
 #include "ScalarConverter.hpp"
+#include <limits>
 
 
 
@@ -44,18 +45,21 @@ static bool is_float(std::string str)
     {
         str.erase(0,1);
     }
+    
+    int f = str.length() - 1;
+    if (str[f] == 'f')
+        str.erase(f,1);
+    else
+        return false;
 
+    int length = str.length();
+    if (str[length - 1] == '.')
+        return false;
     const unsigned long pos = str.find('.');
     if(pos != std::string::npos)
     {
         str.erase(pos,1);
     }
-    else
-        return false;
-
-    int f = str.length() - 1;
-    if (str[f] == 'f')
-        str.erase(f,1);
     else
         return false;
     if (str.find_first_not_of("1234567890") != std::string::npos)
@@ -96,8 +100,13 @@ static bool is_char(std::string str)
 
 static void int_path(std::string str)
 {
-    int value = std::atoi(str.c_str());
-    std::cout << "Int: " << value << std::endl;
+    double value = strtod(str.c_str(),0);
+    if (value <= 2147483647 && value >= -2147483648)
+    {
+        std::cout << "Int: " << static_cast<int>(value) << std::endl;
+    }
+    else
+        std::cout << "Int: impossible" << std::endl;
     std::cout << "Char: ";
     if (value < 0 || value > 127)
         std::cout << "impossible" << std::endl;
@@ -107,15 +116,27 @@ static void int_path(std::string str)
     }
     else
         std::cout << "Non displayable" << std::endl;
-    std::cout << "Float: " << static_cast<float>(value)<< "f" << std::endl;
-    std::cout << "Double: " << static_cast<double>(value)<< std::endl;
+    if (value < -static_cast<double>(std::numeric_limits<float>::max())
+        || value > static_cast<double>(std::numeric_limits<float>::max()))
+        std::cout << "Float: impossible" << std::endl;
+    else
+        std::cout << "Float: " << static_cast<float>(value)<< "f" << std::endl;
+    if (value < -std::numeric_limits<double>::max() || value > std::numeric_limits<double>::max())
+        std::cout << "Double: impossible" << std::endl;
+    else
+        std::cout << "Double: " << static_cast<double>(value) << std::endl;
 }
 
 
 static void float_path(std::string str)
 {
-    float value = static_cast<float>(std::atof(str.c_str()));
-    std::cout << "Int: " << static_cast<int>(value) << std::endl;
+    double value = strtod(str.c_str(),0);
+    if (value <= 2147483647 && value >= -2147483648)
+    {
+        std::cout << "Int: " << static_cast<int>(value) << std::endl;
+    }
+    else
+        std::cout << "Int: impossible" << std::endl;
     std::cout << "Char: ";
     if (value < 0 || value > 127)
         std::cout << "impossible" << std::endl;
@@ -123,15 +144,27 @@ static void float_path(std::string str)
         std::cout << "'" << static_cast<char>(value) << "'" << std::endl;
     else
         std::cout << "Non displayable" << std::endl;
-    std::cout << "Float: " << value << "f" << std::endl;
-    std::cout << "Double: " << static_cast<double>(value) << std::endl;
+    if (value < -static_cast<double>(std::numeric_limits<float>::max())
+        || value > static_cast<double>(std::numeric_limits<float>::max()))
+        std::cout << "Float: impossible" << std::endl;
+    else
+        std::cout << "Float: " << static_cast<float>(value) << "f" << std::endl;
+    if (value < -std::numeric_limits<double>::max() || value > std::numeric_limits<double>::max())
+        std::cout << "Double: impossible" << std::endl;
+    else
+        std::cout << "Double: " << static_cast<double>(value) << std::endl;
 }
 
 
 static void double_path(std::string str)
 {
     double value = strtod(str.c_str(),0);
-    std::cout << "Int: " << static_cast<int>(value) << std::endl;
+    if (value <= 2147483647 && value >= -2147483648)
+    {
+        std::cout << "Int: " << static_cast<int>(value) << std::endl;
+    }
+    else
+        std::cout << "Int: impossible" << std::endl;
     std::cout << "Char: ";
     if (value < 0 || value > 127)
         std::cout << "impossible" << std::endl;
@@ -139,8 +172,15 @@ static void double_path(std::string str)
         std::cout << "'" << static_cast<char>(value) << "'" << std::endl;
     else
         std::cout << "Non displayable" << std::endl;
-    std::cout << "Float: " << static_cast<float>(value) << "f" << std::endl;
-    std::cout << "Double: " << value << std::endl;
+    if (value < -static_cast<double>(std::numeric_limits<float>::max())
+        || value > static_cast<double>(std::numeric_limits<float>::max()))
+        std::cout << "Float: impossible" << std::endl;
+    else
+        std::cout << "Float: " << static_cast<float>(value) << "f" << std::endl;
+    if (value < -std::numeric_limits<double>::max() || value > std::numeric_limits<double>::max())
+        std::cout << "Double: impossible" << std::endl;
+    else
+        std::cout << "Double: " << value << std::endl;
 }
 
 static void char_path(std::string str)
