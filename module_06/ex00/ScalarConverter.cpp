@@ -53,11 +53,9 @@ static bool is_float(std::string str)
     else
         return false;
 
-    const unsigned long poss = str.find('f');
-    if(poss != std::string::npos)
-    {
-        str.erase(poss,1);
-    }
+    int f = str.length() - 1;
+    if (str[f] == 'f')
+        str.erase(f,1);
     else
         return false;
     if (str.find_first_not_of("1234567890") != std::string::npos)
