@@ -50,13 +50,18 @@ class Array
         {
             return (n);
         }
-        T &operator[] (const size_t i) const
+        T &operator[] (const size_t i)
         {
             if(i >= n)
                 throw std::exception();
             return arr[i];
         }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+        const T &operator[] (const size_t i) const
+        {
+            if(i >= n)
+                throw std::exception();
+            return arr[i];
+        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 };
 
 #endif
