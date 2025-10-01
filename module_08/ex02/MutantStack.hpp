@@ -1,23 +1,24 @@
-#ifndef MUTANSTACK_HPP
-#define MUTANSTACK_HPP
+#ifndef MUTANTSTACK_HPP
+#define MUTANTSTACK_HPP
 
 #include <iostream>
 #include <string>
 #include <exception>
 #include <vector>
 #include <algorithm>
+#include <stack>
 
 template <typename T>
 class MutantStack : public std::stack<T>
 {
     public:
 
-        MutanStack(): std::stack<T>(){};
-        ~MutanStack() {};
-        MutanStack(const MutanStack &obj): std::stack<T>(obj);
-        MutanStack& operator=(const MutanStack &obj)
+        MutantStack(): std::stack<T>(){};
+        ~MutantStack() {};
+        MutantStack(const MutantStack &obj): std::stack<T>(obj){};
+        MutantStack& operator=(const MutantStack &obj)
         {
-            std::stack<T>::opreator=(obj);
+            std::stack<T>::operator=(obj);
             return (*this);
         };
 
@@ -25,11 +26,11 @@ class MutantStack : public std::stack<T>
 
         iterator begin()
         {
-            this->c.begin();
+           return(this->c.begin());
         }
         iterator end()
         {
-            this->c.end()
+            return (this->c.end());
         }
 
 
