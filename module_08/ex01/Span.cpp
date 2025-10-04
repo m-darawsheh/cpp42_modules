@@ -74,18 +74,16 @@ int Span::shortestSpan()
         throw OneElement();
     std::vector <int> tem = this->span;
     std::sort(tem.begin(), tem.end());
-    std::vector<int> ::iterator first = tem.begin();
-    std::vector<int> ::iterator second  = tem.begin() + 1;
-    int x  = std::abs(*second - *first) ; 
-    for (int i = 0; i < static_cast<int> (this->span.size()) ; i++)
+    int minSpan = std::abs(tem[1] - tem[0]);
+    for (size_t i = 2; i < tem.size(); ++i)
     {
-        int distance = std::abs(*second - *first);
-        if (distance < x)
-            x = distance;
-        second ++; 
-        first ++;
+        int diff = std::abs(tem[i] - tem[i - 1]);
+        if (diff < minSpan)
+            minSpan = diff;
+        if (minSpan == 0) 
+            break;
     }
-    return x;
+    return minSpan;
 }
 
 
