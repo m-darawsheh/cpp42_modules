@@ -6,5 +6,7 @@ int main (int argc, char *argv[])
     {
         return 1;
     }
-
+    std::string fileName = argv[1];
+    BitcoinExchange a(fileName);
+    return 0;
 }

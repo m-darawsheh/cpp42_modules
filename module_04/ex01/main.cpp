@@ -21,10 +21,10 @@ int main()
     //     delete animals[i];
     // }
 
-    Dog d; 
-    {
-      d = a
-    }
+    // Dog d; 
+    // {
+    //   d = a;
+    // }
 
     return 0;
 }
