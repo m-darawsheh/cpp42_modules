@@ -78,11 +78,11 @@ static int check_float(std::string  num, int flage)
     tem = strtof(num.c_str(), &end);
     if (*end != '\0' || num.empty())
         return 0;
-    // if (flage == 1)
-    // {
-    //     if (tem < 0 || tem > 1000)
-    //         return 0;
-    // }
+    if (flage == 1)
+    {
+        if (tem < 0 || tem > 1000)
+            return 0;
+    }
     // else
     // {
     //     if (tem < 0)
@@ -99,6 +99,66 @@ static int check_header_data_base(std::string date, std::string exchange_rate)
     return 1;
 }
 
+void BitcoinExchange::print (std::string date, std::string value)
+{
+    trim(date);
+    date.erase(10, date.length());
+    trim(value);
+    value.erase(0,1);
+    // std::cout << date << "=>" << value << std::endl;
+
+    if (!this->is_valid_date)
+    {
+        std::cout << "Error: bad input => " << date << std::endl;
+        return ;
+    }
+    // if (!this->is_valid_num)
+    // {
+    //     if (std::atof(value.c_str()) < 0)
+    //         std::cout << "Error: not a positive number." << std::endl;
+    //     else if (std::atof(value.c_str()) > 1000)
+    //         std::cout << "Error: too large a number." << std::endl;
+    //     else
+    //         std::cout << "Error: bad input => " << value << std::endl;
+    //     return ;
+    // }
+    if (std::atof(value.c_str()) < 0)
+    {
+        std::cout << "Error: not a positive number." << std::endl;
+        return ;
+    }
+    if (std::atof(value.c_str()) > 1000)
+    {
+        std::cout << "Error: too large a number." << std::endl;
+        return ;
+    }
+    // std::cout<< date << " " << value << std::endl;
+    // = this->data_base.find(trim(date))
+    std::map<std::string, float>::iterator it = this->data_base.lower_bound(date);
+    // std::cout << "it->first" << it->first << std::endl;
+    // std::cout << "it->second" << it->second << std::endl;
+    
+    
+    if (it != this->data_base.end())
+    {
+        std::cout << date << " => " << value << " = " << (std::atof(value.c_str()) * it->second) << std::endl;
+    }
+    else 
+    {
+        std::cout << "lower\n";
+    }
+    return;
+}
+
+
+int check_header_file_input(std::string date, std::string bitcoin)
+{
+    if (trim(date) != "date" || trim(bitcoin) != "value")
+        return 0;
+    return 1;
+}
+
+
 std::map<std::string, float>  BitcoinExchange::readData ()
 {
     std::ifstream Data("data.csv");
@@ -110,6 +170,8 @@ std::map<std::string, float>  BitcoinExchange::readData ()
     int iter = 0;
     while(getline(Data, buff))
     {
+        this->is_valid_date = true;
+        this->is_valid_num = true;
         quma_pos = buff.find(",", 0);
         first = buff.substr(0,quma_pos);
         trim(first);
@@ -142,64 +204,6 @@ std::map<std::string, float>  BitcoinExchange::readData ()
     return (tem);
 }
 
-void BitcoinExchange::print (std::string date, std::string value)
-{
-    trim(date);
-    date.erase(10, date.length());
-    trim(value);
-    value.erase(0,1);
-    // std::cout << date << "=>" << value << std::endl;
-
-    if (!this->is_valid_date)
-    {
-        std::cout << "Error: bad input => " << date << std::endl;
-        return ;
-    }
-    if (!this->is_valid_num)
-    {
-        if (std::atof(value.c_str()) < 0)
-            std::cout << "Error: not a positive number." << std::endl;
-        else if (std::atof(value.c_str()) > 1000)
-            std::cout << "Error: too large a number." << std::endl;
-        else
-            std::cout << "Error: bad input => " << value << std::endl;
-        return ;
-    }
-    if (std::atof(value.c_str()) < 0)
-    {
-        std::cout << "Error: not a positive number." << std::endl;
-        return ;
-    }
-    if (std::atof(value.c_str()) > 1000)
-    {
-        std::cout << "Error: too large a number." << std::endl;
-        return ;
-    }
-    // std::cout<< date << " " << value << std::endl;
-    // = this->data_base.find(trim(date))
-    std::map<std::string, float>::iterator it = this->data_base.lower_bound(date);
-    // std::cout << "it->first" << it->first << std::endl;
-    // std::cout << "it->second" << it->second << std::endl;
-
-
-    if (it != this->data_base.end())
-    {
-        std::cout << date << " => " << value << " = " << (std::atof(value.c_str()) * it->second) << std::endl;
-    }
-    else 
-    {
-        std::cout << "lower\n";
-    }
-    return;
-}
-
-
-int check_header_file_input(std::string date, std::string bitcoin)
-{
-    if (trim(date) != "date" || trim(bitcoin) != "value")
-        return 0;
-    return 1;
-}
 
 void BitcoinExchange::readInputFile(std::string file)
 {
@@ -208,11 +212,12 @@ void BitcoinExchange::readInputFile(std::string file)
     std::string first;
     std::string second;
     int pipe_pos;
-    this->is_valid_date = true;
-    this->is_valid_num = true;
+
     int iter = 0;
     while (getline(read_input_file, buffer))
     {
+        this->is_valid_date = true;
+        this->is_valid_num = true;
         pipe_pos = buffer.find('|', 0);
         first  = buffer.substr(0,pipe_pos);
         trim(first);
@@ -230,7 +235,7 @@ void BitcoinExchange::readInputFile(std::string file)
             continue;
         }
         if (!valid_date(first))
-        { 
+        {
             this->is_valid_date = false;
         }
         if (!check_float(second,1))
