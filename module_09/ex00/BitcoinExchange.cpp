@@ -1,7 +1,6 @@
 #include "BitcoinExchange.hpp"
 
 #include <cctype> 
-// Trim whitespace from both ends of a string
 std::string trim(const std::string& str) {
     size_t start = 0;
     while (start < str.size() && isspace(str[start])) ++start;
@@ -12,6 +11,7 @@ std::string trim(const std::string& str) {
 
     return str.substr(start, end - start + 1);
 }
+
 BitcoinExchange :: BitcoinExchange ()
 {
     
@@ -36,8 +36,6 @@ BitcoinExchange ::~BitcoinExchange()
 {
 }
 
-// string substr (size_t pos = 0, size_t len = npos) const;
-// size_t find(char c, size_t pos = 0) const;
 
  int BitcoinExchange ::valid_date(std::string date)
 {
@@ -61,6 +59,8 @@ BitcoinExchange ::~BitcoinExchange()
     int int_year =  atoi (year.c_str());
     int int_month = atoi (month.c_str());
     int int_day = atoi (day.c_str());
+    if (int_year < 2009 && int_month < 1 && int_day < 2)
+        return 0;
     if (int_year < 2009 || int_year > 2022)
         return 0;
     if (int_month <= 0 || int_month > 12)
@@ -72,9 +72,20 @@ BitcoinExchange ::~BitcoinExchange()
 
 static int check_float(std::string  num, int flage)
 {
-    (void)flage;
     float tem;
     char *end;
+
+        if (num.find_first_not_of("0123456789.") != std::string::npos)
+        {
+            return 0;
+        }
+        else if (num[0] == '.')
+            return 0;
+        else if (num.find("..") != std::string::npos)
+            return 0;
+        else if (num.find('+') != std::string::npos || num.find('-') != std::string::npos)
+            return 0;
+        
     tem = strtof(num.c_str(), &end);
     if (*end != '\0' || num.empty())
         return 0;
@@ -83,11 +94,11 @@ static int check_float(std::string  num, int flage)
         if (tem < 0 || tem > 1000)
             return 0;
     }
-    // else
-    // {
-    //     if (tem < 0)
-    //         return 0;
-    // } 
+    else
+    {
+        if (tem < 0)
+            return 0;
+    } 
     return 1;
 
 }
@@ -102,26 +113,9 @@ static int check_header_data_base(std::string date, std::string exchange_rate)
 void BitcoinExchange::print (std::string date, std::string value)
 {
     trim(date);
-    date.erase(10, date.length());
     trim(value);
-    value.erase(0,1);
-    // std::cout << date << "=>" << value << std::endl;
 
-    if (!this->is_valid_date)
-    {
-        std::cout << "Error: bad input => " << date << std::endl;
-        return ;
-    }
-    // if (!this->is_valid_num)
-    // {
-    //     if (std::atof(value.c_str()) < 0)
-    //         std::cout << "Error: not a positive number." << std::endl;
-    //     else if (std::atof(value.c_str()) > 1000)
-    //         std::cout << "Error: too large a number." << std::endl;
-    //     else
-    //         std::cout << "Error: bad input => " << value << std::endl;
-    //     return ;
-    // }
+    
     if (std::atof(value.c_str()) < 0)
     {
         std::cout << "Error: not a positive number." << std::endl;
@@ -132,20 +126,26 @@ void BitcoinExchange::print (std::string date, std::string value)
         std::cout << "Error: too large a number." << std::endl;
         return ;
     }
-    // std::cout<< date << " " << value << std::endl;
-    // = this->data_base.find(trim(date))
+    if (!this->is_valid_date)
+    {
+        std::cout << "Error: bad input => " << date << std::endl;
+        return ;
+    }
+    if (!this->is_valid_num)
+    {
+        std::cout << "Error: not a number => " << value << std::endl;
+        return ;
+    }
     std::map<std::string, float>::iterator it = this->data_base.lower_bound(date);
-    // std::cout << "it->first" << it->first << std::endl;
-    // std::cout << "it->second" << it->second << std::endl;
     
     
     if (it != this->data_base.end())
     {
+        if (it->first != date)
+        {
+            --it;
+        }
         std::cout << date << " => " << value << " = " << (std::atof(value.c_str()) * it->second) << std::endl;
-    }
-    else 
-    {
-        std::cout << "lower\n";
     }
     return;
 }
@@ -163,6 +163,7 @@ std::map<std::string, float>  BitcoinExchange::readData ()
 {
     std::ifstream Data("data.csv");
     std::map<std::string, float> tem;
+    std::map<std::string, float> error_map;
     std::string buff;
     std::string first;
     std::string second;
@@ -174,15 +175,17 @@ std::map<std::string, float>  BitcoinExchange::readData ()
         this->is_valid_num = true;
         quma_pos = buff.find(",", 0);
         first = buff.substr(0,quma_pos);
-        trim(first);
+        first = trim(first);
         second = buff.substr(quma_pos + 1, buff.length());
-        trim(second);
+        second = trim(second);
+
         if (iter == 0)
         {
             if (!check_header_data_base(first, second))
             {
-                std::cerr << "date set not valid <header>\n";
-                exit(1);
+                std::cerr << "date set not valid <header> => " << buff << "\n";
+                error_map["error"] = 0;
+                return (error_map);
             }
             iter++;
             continue;
@@ -190,14 +193,15 @@ std::map<std::string, float>  BitcoinExchange::readData ()
         if (!valid_date(first))
         {
             std::cout <<first << std::endl;
-            std::cerr << "data set not valid <date>\n";
-            exit(1);
+            std::cerr << "data set not valid <date> => " << first << "\n";
+            error_map["error"] = 0;
+            return (error_map);
         }
         if (!check_float(second, 0))
         {
-            std::cout <<second << std::endl;
-            std::cerr << "data set not valid <exchange_rate>\n";
-            exit(1);
+            std::cerr << "data set not valid <exchange_rate> => " << second << "\n";
+            error_map["error"] = 0;
+            return (error_map);
         }
         tem[first] = std::atof(second.c_str());
     }
@@ -211,7 +215,7 @@ void BitcoinExchange::readInputFile(std::string file)
     std::string buffer;
     std::string first;
     std::string second;
-    int pipe_pos;
+    size_t pipe_pos;
 
     int iter = 0;
     while (getline(read_input_file, buffer))
@@ -219,17 +223,24 @@ void BitcoinExchange::readInputFile(std::string file)
         this->is_valid_date = true;
         this->is_valid_num = true;
         pipe_pos = buffer.find('|', 0);
+        if (pipe_pos == std::string::npos 
+            || pipe_pos == 0 
+            || pipe_pos == buffer.length() - 1)
+        {
+            std::cerr << "Error: bad input => " << buffer << std::endl;
+            continue;
+        }
+
         first  = buffer.substr(0,pipe_pos);
-        trim(first);
+        first = trim(first);
         second = buffer.substr(pipe_pos + 1 , buffer.length());
-        trim(second);
+        second = trim(second);
         if (iter == 0)
         {
-            std::cout<< first << " " << second << std::endl;
             if (!check_header_file_input(first, second))
             {
                 std::cerr << "Error: bad input => " << buffer << std::endl;
-                exit(1);
+                return ;
             }
             iter++;
             continue;
@@ -251,6 +262,7 @@ BitcoinExchange :: BitcoinExchange (std::string file)
 {
 
     this->data_base = readData();
-    std::cout << "skip database\n";
+    if (this->data_base.find("error") != this->data_base.end())
+        return ;
     readInputFile(file);
 }
