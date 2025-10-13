@@ -6,6 +6,16 @@
 #include <list>
 #include <stack>
 #include <sstream>
+#include <cstdlib>
+
+
+
+enum Op_type {
+    ADD,     
+    SUBTRACT,
+    MULTIPLY,
+    DIVIDE   
+};
 
 class RPN {
     private:
@@ -17,7 +27,7 @@ class RPN {
     RPN(std::string expression);
     RPN &operator=(const RPN &obj);
     void calculate_expression(std::string &expression);
-    void RPN::checks();
+    int checks(std::string token);
 
 };
 

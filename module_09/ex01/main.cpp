@@ -7,6 +7,6 @@ int main(int argc, char *argv[])
         std::cerr<<"Error"<< std::endl;
     }
     std::string ex = argv[1];
-    RPN(ex);
+    RPN a(ex);
     return 0;
 }
