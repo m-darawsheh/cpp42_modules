@@ -12,8 +12,8 @@
 class PmergeMe
 {
     private:
-    std::vector<int> list;
-    std::deque<int> list;
+    std::vector<int> ve_list;
+    std::deque<int> q_list;
     public:
     PmergeMe();
     PmergeMe(std::string arg);
@@ -21,6 +21,8 @@ class PmergeMe
     PmergeMe &operator=(const PmergeMe &obj);
     ~PmergeMe();
     void validation(std::string nums);
+
+
     
 };
 

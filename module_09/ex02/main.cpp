@@ -7,6 +7,6 @@ int main(int argc, char *argv[])
         std::cerr<<"Error"<<std::endl;
         return 1;
     }
-    std::string argv = argv[1];
-    PmergeMe(argv);
+    std::string s = argv[1];
+    PmergeMe a(s);
 }
