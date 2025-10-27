@@ -30,7 +30,6 @@ bool isnum(std::string token)
     size_t i = 0;
     while (i < token.size())
     {
-    // std::isdigit expects unsigned char cast to avoid UB/overload issues
     if (!std::isdigit(static_cast<unsigned char>(token[i])))
         {
             return false ;
@@ -73,14 +72,12 @@ void sort_vec(std::string arg)
     std::vector<int> v_tem;
     std::istringstream istream(arg);
     std::string token;
-    // Collect integers split by spaces
     while (getline(istream, token, ' '))
     {
         if (token.empty())
             continue;
         v_tem.push_back(std::atoi(token.c_str()));
     }
-    // Build pairs from the vector
     std::vector< std::pair<int,int> > pairs;
     bool has_unpaired = false;
     int unpaired_value = 0;
@@ -90,7 +87,7 @@ void sort_vec(std::string arg)
         {
             int a = v_tem[i];
             int b = v_tem[i + 1];
-            if (a > b) std::swap(a, b); // ensure pair is ordered
+            if (a > b) std::swap(a, b);
             pairs.push_back(std::make_pair(a, b));
         }
         else
@@ -100,7 +97,6 @@ void sort_vec(std::string arg)
         }
     }
 
-    // Debug: print ordered pairs
     for (size_t i = 0; i < pairs.size(); ++i)
     {
         std::cout << "pair " << i << ": [" << pairs[i].first << ", " << pairs[i].second << "]" << std::endl;
