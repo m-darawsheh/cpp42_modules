@@ -2,11 +2,11 @@
 
 int main(int argc, char *argv[])
 {
-    if(argc != 2)
+    if(argc < 2)
     {
         std::cerr<<"Error"<<std::endl;
         return 1;
     }
-    std::string s = argv[1];
-    PmergeMe a(s);
+    // std::string s = argv[1];
+    PmergeMe a(argv);
 }

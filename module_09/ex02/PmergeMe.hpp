@@ -16,15 +16,12 @@ class PmergeMe
     std::deque<int> q_list;
     public:
     PmergeMe();
-    PmergeMe(std::string arg);
+    PmergeMe(char *argv[]);
     PmergeMe(const PmergeMe &obj);
     PmergeMe &operator=(const PmergeMe &obj);
     ~PmergeMe();
     void validation(std::string nums);
-
-
-    
+    void parse(char *argv[]);
 };
-
 
 #endif
